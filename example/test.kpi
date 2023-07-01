@@ -1,0 +1,16 @@
+%title = Chemdraw Energy Profile
+%x = Reaction Coordinate
+%y = Free Energy
+%unit = kJ/mol
+%size = 8, 4
+%style = line
+%color = #FF69B4, #FF69B4, black
+%font = Arial
+
+begin
+1, 0
+2, -20.3
+3, -4.8
+4, 6.2
+5, 37.9
+end
