@@ -1,3 +1,5 @@
+import os
+
 from Entity.plot_data import PlotData
 from Service.plotter import KpiPlotter
 from Utility.art import art_text
@@ -8,8 +10,7 @@ def main():
     # 设置欢迎界面
     art_text()
     # 输入 kpi 文件路径
-    print("请输入 KimariPlot input 文件：")
-    url = input()
+    url = input("Please enter the KimariPlot input file (kpi file) path: ")
     # 创建 Parser 解析 kpi 文件
     kpi_result = KpiParser(url).parse()
     # 得到 kpi 文件中的所有数据
@@ -19,13 +20,14 @@ def main():
     # 展示曲线
     fig.show()
     # 询问保存文件的格式
-    print("请输入需要保存的文件名（默认为 figure.png）：")
-    filename = input().strip()
+    filename = input("Please enter the filename to save (default is figure.png): ").strip()
     # 设置默认为 figure.png
     if not filename:
         fig.savefig("figure.png", dpi=700, bbox_inches='tight')
+        print(f"Saved successfully. The image figure.png has been saved to {os.getcwd()}")
     else:
         fig.savefig(filename, dpi=None, bbox_inches='tight')
+        print(f"Saved successfully. The image {filename} has been saved to {os.getcwd()}")
 
 
 if __name__ == "__main__":
