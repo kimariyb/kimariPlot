@@ -33,7 +33,7 @@ pip install -r requirements.txt
 
 要使用 KimariPlot，请执行以下步骤：
 
-<h3><strong font-size:16pt;">请注意：在正式运行前，请确保已经安装了 Python 和 pip 包管理工具，以免程序报错！</strong></h3>
+<h3><strong font-size:16pt; color="red">请注意：在正式运行前，请确保已经安装了 Python 和 pip 包管理工具，以免程序报错！</strong></h3>
 
 1. 在命令行中导航到 KimariPlot 目录。
 
