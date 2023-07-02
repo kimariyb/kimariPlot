@@ -99,7 +99,7 @@ class KpiParser:
             elif line == 'end':
                 break
             try:
-                x, y = map(float, line.split(', '))
+                x, y = map(float, line.split())
             except ValueError:
                 raise ValueError(f'文件行 "{line}" 格式不正确')
             if not math.isfinite(x) or not math.isfinite(y):
