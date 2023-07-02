@@ -2,9 +2,9 @@
 %x = Scan Coordinate
 %y = Total Energy
 %unit = Hartree
-%size = 8, 4
+%size = 9, 4
 %style = curve
-%color = #FF69B4, #FF69B4, black
+%color = #1F77B4, #0570B0, black
 %font = Arial
 
 begin

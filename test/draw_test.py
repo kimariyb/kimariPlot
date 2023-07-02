@@ -1,4 +1,4 @@
-from Entity.plot_data import PlotData
+from Entity.data import PlotData
 from Service.plotter import KpiPlotter
 from Utility.parser import KpiParser
 
@@ -20,5 +20,5 @@ def test_curve():
 
 
 if __name__ == '__main__':
-    # test_line()
-    test_curve()
+    test_line()
+    # test_curve()

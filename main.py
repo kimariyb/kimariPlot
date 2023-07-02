@@ -1,6 +1,6 @@
 import os
 
-from Entity.plot_data import PlotData
+from Entity.data import PlotData
 from Service.plotter import KpiPlotter
 from Utility.art import art_text
 from Utility.parser import KpiParser
@@ -26,7 +26,7 @@ def main():
         fig.savefig("figure.png", dpi=700, bbox_inches='tight')
         print(f"Saved successfully. The image figure.png has been saved to {os.getcwd()}")
     else:
-        fig.savefig(filename, dpi=None, bbox_inches='tight')
+        fig.savefig(filename, dpi=700, bbox_inches='tight')
         print(f"Saved successfully. The image {filename} has been saved to {os.getcwd()}")
 
 
