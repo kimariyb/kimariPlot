@@ -1,5 +1,5 @@
 <h1 align="center">
-    <img src="figure/logo.png" width="150">
+    <img src="figure/logo.png" width="200">
 </h1><br>
 
 
@@ -33,7 +33,7 @@ pip install -r requirements.txt
 
 要使用 KimariPlot，请执行以下步骤：
 
-<p><strong style="color:red; font-size:16pt;">请注意：在正式运行前，请确保已经安装了 Python 和 pip 包管理工具，以免程序报错！</strong></p>
+<div><strong style="color:red; font-size:16pt;">请注意：在正式运行前，请确保已经安装了 Python 和 pip 包管理工具，以免程序报错！</strong></div>
 
 1. 在命令行中导航到 KimariPlot 目录。
 
