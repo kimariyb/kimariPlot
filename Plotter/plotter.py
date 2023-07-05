@@ -1,8 +1,8 @@
 import numpy as np
 from matplotlib import pyplot as plt
 from scipy.interpolate import interp1d
-from Utility.math_function import find_extremas, find_suitable_y
-from Entity.data import PlotData
+from Parser.data import PlotData
+from Utility.util import find_extremas, find_suitable_y
 
 
 class KpiPlotter:

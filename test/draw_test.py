@@ -1,6 +1,6 @@
-from Entity.data import PlotData
-from Service.plotter import KpiPlotter
-from Utility.parser import KpiParser
+from Parser.data import PlotData
+from Plotter.plotter import KpiPlotter
+from Parser.parser import KpiParser
 
 
 def test_line():

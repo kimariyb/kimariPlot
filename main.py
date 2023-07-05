@@ -1,9 +1,9 @@
 import os
 
-from Entity.data import PlotData
-from Service.plotter import KpiPlotter
-from Utility.art import art_text
-from Utility.parser import KpiParser
+from Parser.data import PlotData
+from Plotter.plotter import KpiPlotter
+from Parser.parser import KpiParser
+from Utility.util import art_text
 
 
 def main():
