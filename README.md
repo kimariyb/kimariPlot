@@ -26,7 +26,7 @@ pip install matplotlib, toml
 kimariplot profile.toml
 ```
 
-其中，`profile.toml` 是一个记录了颜色、曲线格式以及绘制所需要的数据的 Toml 文件。
+其中，`profile.toml` 是一个记录了颜色、曲线格式以及绘制所需要的数据的 Toml 文件。以下是 `kimariplot/example/profile1.toml` 和 `kimariplot/example/profile2.toml` 的内容，以及生成的 Free Energy Profile 图像。
 
 ```toml
 [path.1]
