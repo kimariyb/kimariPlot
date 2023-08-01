@@ -57,3 +57,5 @@ class PlotData:
         get the third elements of data
         """
         return [float(sublist[2]) for sublist in self.data]
+
+
