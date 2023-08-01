@@ -20,6 +20,7 @@ KimariPlot 的开发离不开以下开源项目：
 - **NumPy**
 - **Matplotlib**
 - **SciPy**
+- **Toml**
 
 还要感谢所有为 KimariPlot 做出贡献的开发者 Kimariyb 和用户。
 
