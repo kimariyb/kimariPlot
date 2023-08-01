@@ -12,6 +12,9 @@ KimariPlot 是一款基于 Python 开发的开源绘图软件，主要用于快�
 
 ## 使用
 
+<img src="figure/1.png">
+
+<img src="figure/2.png">
 
 ## 鸣谢
 
