@@ -174,7 +174,7 @@ def plot_all_line_paths(data_list, dpi, size, font, output_type):
 
 def main():
     # 版本参数
-    version = '1.2.0'
+    version = '1.2.1'
     # 创建 ArgumentParser 对象
     parser = argparse.ArgumentParser(description='Generate a energy profile using kimariplot', add_help=False)
     # 添加 -h 参数
@@ -191,7 +191,7 @@ def main():
     # 添加图像大小参数
     parser.add_argument('--size', '-s', dest='size', type=str, help='The size of the graph', default='10,7.5')
     # 添加查询版本参数
-    parser.add_argument('--version', '-v', dest='version', action='version', version=f'kimariplot version {version}')
+    parser.add_argument('--version', '-v', action='version', version=f'kimariplot version {version}')
     # 解析命令行参数
     args = parser.parse_args()
     # 如果用户输入了 -v 参数，输出版本信息并退出
