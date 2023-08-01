@@ -1,4 +1,65 @@
+import argparse
+
 import matplotlib.pyplot as plt
+import toml
+
+
+def parse(file_path: str):
+    """
+    读取 toml 文件，并返回一个 PlotData 对象列表
+    """
+    # 读取 toml 文件，并赋值给一个 toml 对象
+    # 使用上下文管理器打开文件
+    with open(file_path, 'r', encoding='utf-8') as f:
+        toml_data = toml.load(f)
+
+    # 创建一个空的 PlotData 对象列表
+    plot_data_list = []
+
+    # 遍历 toml 对象中的所有的 profile 段落
+    for name, profile_data in toml_data['path'].items():
+        # 创建一个 PlotData 对象，并添加到 plot_data_list 中
+        plot_data = PlotData(profile_data['color'], profile_data['style'], profile_data['data'])
+        # 将读取到的 PlotData 对象放入集合中
+        plot_data_list.append(plot_data)
+
+    # 返回 PlotData 对象列表
+    return plot_data_list
+
+
+class PlotData:
+    """
+    PlotData 对象，用来存储 toml 文件中的信息，并且用来绘制图片
+    """
+
+    def __init__(self, color, style, data):
+        self.color = color
+        self.style = style
+        self.data = data
+
+    def __str__(self):
+        result = f"The data of plotting: \ncolor: {self.color}\nstyle: {self.style}\n"
+        for i, item in enumerate(self.data):
+            result += f"item {i + 1}: {item}\n"
+        return result
+
+    def get_labels(self):
+        """
+        get the first elements of data
+        """
+        return [sublist[0] for sublist in self.data]
+
+    def get_x(self):
+        """
+        get the second elements of data
+        """
+        return [float(sublist[1]) for sublist in self.data]
+
+    def get_y(self):
+        """
+        get the third elements of data
+        """
+        return [float(sublist[2]) for sublist in self.data]
 
 
 def get_suitable_x(plot_data_list):
@@ -57,7 +118,8 @@ def plot_line_path(ax, x, y, labels, color, style, data_list):
         ax.text(x_new, y_new + y_add_num, f"{y_new:.1f}", ha='center', va='bottom', fontsize=8,
                 fontweight='medium', color=color)
         # 绘制 label
-        ax.text(x_new, y_new - y_add_num * 1.8, labels[i], ha='center', va='top', fontsize=8.5, fontweight='bold', color=color)
+        ax.text(x_new, y_new - y_add_num * 1.8, labels[i], ha='center', va='top', fontsize=8.5, fontweight='bold',
+                color=color)
 
     # 以折线连接平台
     for i in range(len(x) - 1):
@@ -108,3 +170,37 @@ def plot_all_line_paths(data_list, dpi, size, font, output_type):
     save_name = "figure." + output_type
     # 保存
     fig.savefig(save_name, dpi=dpi, bbox_inches='tight')
+
+
+def main():
+    # 版本参数
+    version = '1.2.0'
+    # 创建 ArgumentParser 对象
+    parser = argparse.ArgumentParser(description='Generate a energy profile using kimariplot', add_help=False)
+    # 添加 -h 参数
+    parser.add_argument('--help', '-h', action='help', help='Show this help message and exit')
+    # 添加输入文件参数
+    parser.add_argument('input_file', type=str, help='Please input a Toml file')
+    # 添加输出文件格式参数
+    parser.add_argument('--output_type', '-o', dest='output', type=str, help='The output type of the graph',
+                        default='png')
+    # 添加输出文件 dpi 参数
+    parser.add_argument('--dpi', '-d', dest='dpi', type=int, help='The dpi of the output graph', default=500)
+    # 添加全局字体参数
+    parser.add_argument('--font', '-f', dest='font', type=str, help='The font family of the graph', default='Arial')
+    # 添加图像大小参数
+    parser.add_argument('--size', '-s', dest='size', type=str, help='The size of the graph', default='10,7.5')
+    # 添加查询版本参数
+    parser.add_argument('--version', '-v', dest='version', action='version', version=f'kimariplot version {version}')
+    # 解析命令行参数
+    args = parser.parse_args()
+    # 如果用户输入了 -v 参数，输出版本信息并退出
+    if args.version:
+        print(f'kimariplot version {version}')
+        exit()
+    # 得到 Toml 文件中的数据列表
+    plot_data_list = parse(args.input_file)
+    # 将 size 参数转换为元组类型
+    size = tuple(map(float, args.size.split(',')))
+    # 绘制所有路径
+    plot_all_line_paths(plot_data_list, args.dpi, size, args.font, args.output)

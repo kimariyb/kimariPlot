@@ -20,13 +20,47 @@ pip install matplotlib, toml
 
 ## 使用
 
-安装完 KimariPlot 之后，可以直接通过如下命令在命令行中运行。
+安装完 KimariPlot 之后，可以直接通过如下命令在命令行中运行。接着就会在当前目录下生成 figure.png 图像文件。`profile.toml` 是一个 toml 文件，用来记录颜色、曲线格式以及绘制所需要的数据。
 
 ```shell
 kimariplot profile.toml
 ```
 
-其中，`profile.toml` 是一个记录了颜色、曲线格式以及绘制所需要的数据的 Toml 文件。以下是 `kimariplot/example/profile1.toml` 和 `kimariplot/example/profile2.toml` 的内容，以及生成的 Free Energy Profile 图像。
+简要介绍一下 toml 文件所需要配置的内容。`n` 为从 1 开始的整数。`color` 为折线颜色，`style` 为折线的格式，可以为 `-` 或 `--`。`data` 为数据的列表，里面可以包括很多个 3 字符串元素的列表。第一个字符串表示名字；第二个字符串表示反应的进度，一般从 1 开始；第三个字符串表示反应的 Free Energy 能垒，一般都用 kcal/mol 表示。
+
+```toml
+[path.n]
+color = "black"
+style = "-"
+data = [
+    ["Name", "1", "0.0"],
+    ["", "", ""],
+]
+```
+
+使用 KimariPlot 命令时可以更改绘图的参数，KimariPlot 支持的参数如下所示。
+
+```shell
+usage: kimariplot [--help] [--output_type OUTPUT] [--dpi DPI] [--font FONT] [--size SIZE] [--version] input_file
+
+Generate a energy profile using kimariplot
+
+positional arguments:
+  input_file            Please input a Toml file
+
+options:
+  --help, -h            Show this help message and exit
+  --output_type OUTPUT, -o OUTPUT
+                        The output type of the graph
+  --dpi DPI, -d DPI     The dpi of the output graph
+  --font FONT, -f FONT  The font family of the graph
+  --size SIZE, -s SIZE  The size of the graph
+  --version, -v         show program's version number and exit
+```
+
+## 绘制效果
+
+本例在 `kimariplot` 的 `examples/profile1.toml` 中
 
 ```toml
 [path.1]
@@ -54,6 +88,8 @@ data = [
 ```
 
 <img src="figure/1.png">
+
+本例在 `kimariplot` 的 `examples/profile2.toml` 中
 
 ```toml
 [path.1]

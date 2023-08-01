@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="kimariplot",
-    version="1.1.0",
+    version="1.2.0",
     author="Kimariyb",
     author_email="kimariyb@163.com",
     description="A tool for generating Kimari-plots.",
@@ -15,7 +15,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     entry_points={
         'console_scripts': [
-            'kimariplot=kimariplot.main:main',
+            'kimariplot=kimariplot.plotter:main',
         ],
     },
     classifiers=[
