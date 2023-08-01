@@ -55,9 +55,9 @@ def plot_line_path(ax, x, y, labels, color, style, data_list):
         ax.plot([x_new - 0.15, x_new + 0.15], [y_new, y_new], color=color, linewidth=2.7)
         # 显示数字
         ax.text(x_new, y_new + y_add_num, f"{y_new:.1f}", ha='center', va='bottom', fontsize=8,
-                fontweight='medium')
+                fontweight='medium', color=color)
         # 绘制 label
-        ax.text(x_new, y_new - y_add_num * 1.8, labels[i], ha='center', va='top', fontsize=8.5, fontweight='bold')
+        ax.text(x_new, y_new - y_add_num * 1.8, labels[i], ha='center', va='top', fontsize=8.5, fontweight='bold', color=color)
 
     # 以折线连接平台
     for i in range(len(x) - 1):
@@ -107,4 +107,4 @@ def plot_all_line_paths(data_list, dpi, size, font, output_type):
     # 保存路径为当前文件夹下的 figure 文件
     save_name = "figure." + output_type
     # 保存
-    fig.savefig(save_name, dpi=dpi)
+    fig.savefig(save_name, dpi=dpi, bbox_inches='tight')

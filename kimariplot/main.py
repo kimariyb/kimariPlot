@@ -1,6 +1,6 @@
 import argparse
 
-from parser import parse
+from toml_parser import parse
 from poltter import plot_all_line_paths
 
 
