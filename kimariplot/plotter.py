@@ -174,7 +174,7 @@ def plot_all_line_paths(data_list, dpi, size, font, output_type):
 
 def main():
     # 版本参数
-    version = '1.2.1'
+    version = '1.2.2'
     # 创建 ArgumentParser 对象
     parser = argparse.ArgumentParser(description='Generate a energy profile using kimariplot', add_help=False)
     # 添加 -h 参数
@@ -194,10 +194,6 @@ def main():
     parser.add_argument('--version', '-v', action='version', version=f'kimariplot version {version}')
     # 解析命令行参数
     args = parser.parse_args()
-    # 如果用户输入了 -v 参数，输出版本信息并退出
-    if args.version:
-        print(f'kimariplot version {version}')
-        exit()
     # 得到 Toml 文件中的数据列表
     plot_data_list = parse(args.input_file)
     # 将 size 参数转换为元组类型
