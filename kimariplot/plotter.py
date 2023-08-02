@@ -1,4 +1,5 @@
 import argparse
+import datetime
 
 import matplotlib.pyplot as plt
 import toml
@@ -172,9 +173,38 @@ def plot_all_line_paths(data_list, dpi, size, font, output_type):
     fig.savefig(save_name, dpi=dpi, bbox_inches='tight')
 
 
+def welcome(version):
+    """
+    欢迎页面
+    """
+    # 定义版本信息
+    version_info = {
+        'version': version,
+        'release_date': 'Aug-2-2023',
+        'developer': 'Kimariyb (XiaMen University, School of Electronic Science and Engineering)',
+        'website': 'https://github.com/kimariyb/kimariPlot',
+    }
+    # 获取当前日期和时间
+    now = datetime.datetime.now()
+    # 定义界面文本
+    interface_text = f"""
+KimariPlot --  A plotting software used for quickly creating energy profile found in scientific literature. 
+Version {version_info['version']}, release date: {version_info['release_date']}
+Developer: {version_info['developer']}
+KimariPlot Github website: {version_info['website']}
+
+( Current date: {now.date()}  Time: {now.strftime("%H:%M:%S")} )
+
+Thank you for using, the energy profile has now been successfully plotted!    
+"""
+
+    # 打印界面文本
+    print(interface_text)
+
+
 def main():
     # 版本参数
-    version = '1.2.2'
+    version = '1.2.3'
     # 创建 ArgumentParser 对象
     parser = argparse.ArgumentParser(description='Generate a energy profile using kimariplot', add_help=False)
     # 添加 -h 参数
@@ -194,6 +224,8 @@ def main():
     parser.add_argument('--version', '-v', action='version', version=f'kimariplot version {version}')
     # 解析命令行参数
     args = parser.parse_args()
+    # 调用欢迎页面函数
+    welcome(version)
     # 得到 Toml 文件中的数据列表
     plot_data_list = parse(args.input_file)
     # 将 size 参数转换为元组类型
