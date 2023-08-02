@@ -187,7 +187,7 @@ def plot_all_lines(data_list, dpi, size, font, output_type):
 def main():
     # 定义版本信息
     version_info = {
-        'version': 'v1.2.4',
+        'version': 'v1.2.5',
         'release_date': 'Aug-3-2023',
         'developer': 'Kimariyb, Ryan Hsiun',
         'address': 'XiaMen University, School of Electronic Science and Engineering',
@@ -237,6 +237,3 @@ def main():
     print(f"Currently timeline: {now}")
     print("============================================================================")
 
-
-if __name__ == '__main__':
-    main()
