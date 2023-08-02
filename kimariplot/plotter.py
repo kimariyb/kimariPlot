@@ -1,31 +1,8 @@
 import argparse
 import datetime
-
+from pathlib import Path
 import matplotlib.pyplot as plt
 import toml
-
-
-def parse(file_path: str):
-    """
-    读取 toml 文件，并返回一个 PlotData 对象列表
-    """
-    # 读取 toml 文件，并赋值给一个 toml 对象
-    # 使用上下文管理器打开文件
-    with open(file_path, 'r', encoding='utf-8') as f:
-        toml_data = toml.load(f)
-
-    # 创建一个空的 PlotData 对象列表
-    plot_data_list = []
-
-    # 遍历 toml 对象中的所有的 profile 段落
-    for name, profile_data in toml_data['path'].items():
-        # 创建一个 PlotData 对象，并添加到 plot_data_list 中
-        plot_data = PlotData(profile_data['color'], profile_data['style'], profile_data['data'])
-        # 将读取到的 PlotData 对象放入集合中
-        plot_data_list.append(plot_data)
-
-    # 返回 PlotData 对象列表
-    return plot_data_list
 
 
 class PlotData:
@@ -63,15 +40,44 @@ class PlotData:
         return [float(sublist[2]) for sublist in self.data]
 
 
+def parse(file_path: str):
+    """
+    读取 toml 文件，并返回一个 PlotData 对象列表
+    """
+    try:
+        # 使用 Path 对象表示文件路径
+        file_path = Path(file_path)
+        # 使用上下文管理器打开文件，读取 toml 文件，并赋值给一个 toml 对象
+        with file_path.open('r', encoding='utf-8') as f:
+            toml_data = toml.load(f)
+
+        # 创建一个空的 PlotData 对象列表
+        plot_data_list = []
+
+        # 遍历 toml 对象中的所有的 profile 段落
+        for name, profile_data in toml_data['path'].items():
+            # 创建一个 PlotData 对象，并添加到 plot_data_list 中
+            plot_data = PlotData(profile_data['color'], profile_data['style'], profile_data['data'])
+            # 将读取到的 PlotData 对象放入集合中
+            plot_data_list.append(plot_data)
+
+        # 返回 PlotData 对象列表
+        return plot_data_list
+    except FileNotFoundError:
+        raise FileNotFoundError(f"File '{file_path}' not found.")
+    except (toml.TomlDecodeError, KeyError) as e:
+        raise ValueError(f"Error parsing TOML file: {e}")
+    except Exception as e:
+        raise Exception(f"An error occurred while parsing the file: {e}")
+
+
 def get_suitable_x(plot_data_list):
     """
     returns a suitable x
     """
-    mix_list = []
-    for plot_data in plot_data_list:
-        mix_list.append(plot_data.get_x())
+    x_lists = [plot_data.get_x() for plot_data in plot_data_list]
     # 找到每个列表中的最大值，并将它们存储在一个列表中
-    max_values = [max(lst) for lst in mix_list]
+    max_values = [max(lst) for lst in x_lists]
     # 找到列表中的最大值
     max_value = max(max_values)
 
@@ -82,13 +88,11 @@ def get_suitable_y(plot_data_list):
     """
     returns a suitable y
     """
-    mix_list = []
-    for plot_data in plot_data_list:
-        mix_list.append(plot_data.get_y())
+    y_lists = [plot_data.get_y() for plot_data in plot_data_list]
     # 找到每个列表中的最大值，并将它们存储在一个列表中
-    max_values = [max(lst) for lst in mix_list]
+    max_values = [max(lst) for lst in y_lists]
     # 找到每个列表中的最小值，并将它们存储在一个列表中
-    min_values = [min(lst) for lst in mix_list]
+    min_values = [min(lst) for lst in y_lists]
     # 找到列表中的最大值
     max_value = max(max_values)
     # 找到列表中的最小值
@@ -97,9 +101,9 @@ def get_suitable_y(plot_data_list):
     return max_value, min_value
 
 
-def plot_line_path(ax, x, y, labels, color, style, data_list):
+def plot_line(ax, x, y, labels, color, style, data_list):
     """
-    用来绘制单个路径的 Energy Profile
+    用来绘制单个路径的 Energy Profile 的折线图
     :param ax: Matplotlib axes object
     :param x: X position
     :param y: y position
@@ -127,7 +131,7 @@ def plot_line_path(ax, x, y, labels, color, style, data_list):
         ax.plot([x[i] + 0.15, x[i + 1] - 0.15], [y[i], y[i + 1]], linestyle=style, linewidth=1, color=color)
 
 
-def plot_all_line_paths(data_list, dpi, size, font, output_type):
+def plot_all_lines(data_list, dpi, size, font, output_type):
     """
     绘制所有的路径，顺序从最后一个绘制
     :param data_list: list of plot data
@@ -136,77 +140,64 @@ def plot_all_line_paths(data_list, dpi, size, font, output_type):
     :param font: font of the graph
     :param output_type: output type of graph
     """
-    # 设置字体
-    plt.rcParams['font.family'] = font
+    try:
+        # 设置字体
+        plt.rcParams['font.family'] = font
 
-    # 创建画布
-    fig, ax = plt.subplots(figsize=size, dpi=300)
-    # 反转列表
-    reversed_data_list = list(reversed(data_list))
-    # 遍历路径列表，绘制每一条路径
-    for plot_data in reversed_data_list:
-        color = plot_data.color
-        style = plot_data.style
-        labels = plot_data.get_labels()
-        x = plot_data.get_x()
-        y = plot_data.get_y()
-        plot_line_path(ax, x, y, labels, color, style, data_list)
+        # 创建画布
+        fig, ax = plt.subplots(figsize=size, dpi=300)
+        # 反转列表
+        reversed_data_list = list(reversed(data_list))
+        # 遍历路径列表，绘制每一条路径
+        for plot_data in reversed_data_list:
+            color = plot_data.color
+            style = plot_data.style
+            labels = plot_data.get_labels()
+            x = plot_data.get_x()
+            y = plot_data.get_y()
+            plot_line(ax, x, y, labels, color, style, data_list)
 
-    # 找到所有 x_list 中最大的一个值
-    x_suitable = get_suitable_x(data_list)
+        # 找到所有 x_list 中最大的一个值
+        x_suitable = get_suitable_x(data_list)
 
-    # 设置 x 轴坐标刻度
-    ax.set_xlim(0.5, x_suitable + 0.5)
-    # 设置 y 轴标题
-    ax.set_ylabel("Gibbs Free Energy (kcal/mol)", fontsize=14, fontweight="bold")
-    # 设置 0.5 留白
-    ax.margins(0.5)
+        # 设置 x 轴坐标刻度
+        ax.set_xlim(0.5, x_suitable + 0.5)
+        # 设置 y 轴标题
+        ax.set_ylabel("Gibbs Free Energy (kcal/mol)", fontsize=16, fontweight="bold")
+        # 设置 0.5 留白
+        ax.margins(0.5)
 
-    # 将 x 轴和 y 轴的刻度线和标签设置为空
-    ax.tick_params(axis='both', which='both', length=0, labelsize=0)
+        # 将 x 轴和 y 轴的刻度线和标签设置为空
+        ax.tick_params(axis='both', which='both', length=0, labelsize=0)
 
-    # 显示图形
-    fig.show()
-    # 保存路径为当前文件夹下的 figure 文件
-    save_name = "figure." + output_type
-    # 保存
-    fig.savefig(save_name, dpi=dpi, bbox_inches='tight')
+        # 显示图形
+        fig.show()
+        # 保存路径为当前文件夹下的 figure 文件
+        save_name = "figure." + output_type
+        # 保存
+        fig.savefig(save_name, dpi=dpi, bbox_inches='tight')
+        # 保存成功后提示成功信息
+        print("============================================================================")
+        print("The graph has been successfully saved! The new graph is named figure!\n")
 
-
-def welcome(version):
-    """
-    欢迎页面
-    """
-    # 定义版本信息
-    version_info = {
-        'version': version,
-        'release_date': 'Aug-2-2023',
-        'developer': 'Kimariyb (XiaMen University, School of Electronic Science and Engineering)',
-        'website': 'https://github.com/kimariyb/kimariPlot',
-    }
-    # 获取当前日期和时间
-    now = datetime.datetime.now()
-    # 定义界面文本
-    interface_text = f"""
-KimariPlot --  A plotting software used for quickly creating energy profile found in scientific literature. 
-Version {version_info['version']}, release date: {version_info['release_date']}
-Developer: {version_info['developer']}
-KimariPlot Github website: {version_info['website']}
-
-( Current date: {now.date()}  Time: {now.strftime("%H:%M:%S")} )
-
-Thank you for using, the energy profile has now been successfully plotted!    
-"""
-
-    # 打印界面文本
-    print(interface_text)
+    except Exception as e:
+        raise Exception(f"An error occurred while plotting the graph: {e}")
 
 
 def main():
-    # 版本参数
-    version = '1.2.3'
+    # 定义版本信息
+    version_info = {
+        'version': 'v1.2.4',
+        'release_date': 'Aug-3-2023',
+        'developer': 'Kimariyb, Ryan Hsiun',
+        'address': 'XiaMen University, School of Electronic Science and Engineering',
+        'website': 'https://github.com/kimariyb/kimariPlot',
+    }
+
     # 创建 ArgumentParser 对象
-    parser = argparse.ArgumentParser(description='Generate a energy profile using kimariplot', add_help=False)
+    parser = argparse.ArgumentParser(prog='KimariPlot', add_help=False,
+                                     description='KimariPlot -- '
+                                                 'A plotting software used for quickly creating energy profile.')
     # 添加 -h 参数
     parser.add_argument('--help', '-h', action='help', help='Show this help message and exit')
     # 添加输入文件参数
@@ -220,15 +211,32 @@ def main():
     parser.add_argument('--font', '-f', dest='font', type=str, help='The font family of the graph', default='Arial')
     # 添加图像大小参数
     parser.add_argument('--size', '-s', dest='size', type=str, help='The size of the graph', default='10,7.5')
-    # 添加查询版本参数
-    parser.add_argument('--version', '-v', action='version', version=f'kimariplot version {version}')
+    # 添加版权信息和参数
+    parser.add_argument('--version', '-v', action='version', help='Show the version information',
+                        version=version_info['version'])
     # 解析命令行参数
     args = parser.parse_args()
-    # 调用欢迎页面函数
-    welcome(version)
+
     # 得到 Toml 文件中的数据列表
     plot_data_list = parse(args.input_file)
     # 将 size 参数转换为元组类型
     size = tuple(map(float, args.size.split(',')))
     # 绘制所有路径
-    plot_all_line_paths(plot_data_list, args.dpi, size, args.font, args.output)
+    plot_all_lines(plot_data_list, args.dpi, size, args.font, args.output)
+    # 程序最后输出版本和基础信息
+    print(f"KimariPlot -- A plotting software used for quickly creating energy profile.")
+    print(f"Version: {version_info['version']}, release date: {version_info['release_date']}")
+    print(f"Developer: {version_info['developer']}")
+    print(f"Address: {version_info['address']}")
+    print(f"KimariPlot home website: {version_info['website']}\n")
+    # 获取当前日期和时间
+    now = datetime.datetime.now().strftime("%b-%d-%Y, 00:45:%S")
+    # 程序结束后提示版权信息和问候语
+    print(f"Thank you for using our plotting tool! Have a great day!")
+    print("Copyright © 2023 Kimariyb. All rights reserved.")
+    print(f"Currently timeline: {now}")
+    print("============================================================================")
+
+
+if __name__ == '__main__':
+    main()
