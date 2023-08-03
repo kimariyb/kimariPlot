@@ -4,6 +4,10 @@
 
 KimariPlot 是一个开源的 Python 绘图脚本，用来绘制科研中的 Free Energy Profile。KimariPlot 使用简单，可以直接从命令行读取 Toml 文件绘制 Free Energy Profile，可以不需要用鼠标一直拖来拖去，是懒人绘制 Free Energy Profile 的极佳选择。
 
+
+<img width="120%" src="https://repobeats.axiom.co/api/embed/c3ae6c194fc8f1a0989fa0afd01e39e6f32dabec.svg">
+
+
 ## 安装
 
 KimariPlot 可以使用 pip 工具直接安装。
