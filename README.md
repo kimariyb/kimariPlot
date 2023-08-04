@@ -28,16 +28,19 @@ pip install matplotlib, toml
 kimariplot profile.toml
 ```
 
-简要介绍一下 toml 文件所需要配置的内容。`n` 为从 1 开始的整数。`color` 为折线颜色，`style` 为折线的格式，可以为 `-` 或 `--`。`data` 为数据的列表，里面可以包括很多个 3 字符串元素的列表。第一个字符串表示名字；第二个字符串表示反应的进度，一般从 1 开始；第三个字符串表示反应的 Free Energy 能垒，一般都用 kcal/mol 表示。
+简要介绍一下 toml 文件所需要配置的内容。`color` 为折线颜色，`style` 为折线的格式，可以为 `-` 或 `--`。`data` 为数据的列表，里面可以包括很多个 3 字符串元素的列表。第一个字符串表示名字；第二个字符串表示反应的进度，一般从 1 开始；第三个字符串表示反应的 Free Energy 能垒，一般都用 kcal/mol 表示。
 
 ```toml
-[path.n]
+[[path]]
 color = "black"
 style = "-"
 data = [
     ["Name", "1", "0.0"],
     ["", "", ""],
 ]
+
+[[path]]
+...
 ```
 
 使用 KimariPlot 命令时可以更改绘图的参数，KimariPlot 支持的参数如下所示。
@@ -65,7 +68,7 @@ options:
 本例在 `kimariplot` 的 `examples/profile1.toml` 中
 
 ```toml
-[path.1]
+[[path]]
 color = "black"
 style = "-"
 data = [
@@ -77,7 +80,7 @@ data = [
     ["10", "6", "-10.0"]
 ]
 
-[path.2]
+[[path]]
 color = "red"
 style = "--"
 data = [
@@ -94,7 +97,7 @@ data = [
 本例在 `kimariplot` 的 `examples/profile2.toml` 中
 
 ```toml
-[path.1]
+[[path]]
 color = "black"
 style = "-"
 data = [
@@ -105,7 +108,7 @@ data = [
     ["P", "5", "-2.1"]
 ]
 
-[path.2]
+[[path]]
 color = "red"
 style = "--"
 data = [
@@ -116,7 +119,7 @@ data = [
     ["P", "5", "-2.1"]
 ]
 
-[path.3]
+[[path]]
 color = "blue"
 style = "--"
 data = [
@@ -127,7 +130,7 @@ data = [
     ["", "5", "-2.1"]
 ]
 
-[path.4]
+[[path]]
 color = "green"
 style = "--"
 data = [

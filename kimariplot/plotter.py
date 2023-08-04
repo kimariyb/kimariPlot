@@ -54,11 +54,9 @@ def parse(file_path: str):
         # 创建一个空的 PlotData 对象列表
         plot_data_list = []
 
-        # 遍历 toml 对象中的所有的 profile 段落
-        for name, profile_data in toml_data['path'].items():
-            # 创建一个 PlotData 对象，并添加到 plot_data_list 中
-            plot_data = PlotData(profile_data['color'], profile_data['style'], profile_data['data'])
-            # 将读取到的 PlotData 对象放入集合中
+        # 遍历 toml 对象中的所有的 path 段落
+        for path_data in toml_data['path']:
+            plot_data = PlotData(path_data['color'], path_data['style'], path_data['data'])
             plot_data_list.append(plot_data)
 
         # 返回 PlotData 对象列表
@@ -187,8 +185,8 @@ def plot_all_lines(data_list, dpi, size, font, output_type):
 def main():
     # 定义版本信息
     version_info = {
-        'version': 'v1.2.5',
-        'release_date': 'Aug-3-2023',
+        'version': 'v1.3.0',
+        'release_date': 'Aug-4-2023',
         'developer': 'Kimariyb, Ryan Hsiun',
         'address': 'XiaMen University, School of Electronic Science and Engineering',
         'website': 'https://github.com/kimariyb/kimariPlot',
@@ -236,4 +234,3 @@ def main():
     print("Copyright © 2023 Kimariyb. All rights reserved.")
     print(f"Currently timeline: {now}")
     print("============================================================================")
-

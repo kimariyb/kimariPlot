@@ -1,4 +1,4 @@
-[path.1]
+[[path]]
 color = "black"
 style = "-"
 data = [
@@ -10,7 +10,7 @@ data = [
     ["10", "6", "-10.0"]
 ]
 
-[path.2]
+[[path]]
 color = "red"
 style = "--"
 data = [
