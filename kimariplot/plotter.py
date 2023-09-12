@@ -1,6 +1,28 @@
+# -*- coding: utf-8 -*-
+"""
+plotter.py
+Briefly describe the functionality and purpose of the file.
+
+This is a Main function file!
+
+This file is part of KimariPlot.
+KimariPlot is a Python script that quickly creating energy profile.
+
+@author:
+Kimariyb (kimariyb@163.com)
+
+@license:
+Licensed under the MIT License.
+For details, see the LICENSE file.
+
+@Data:
+2023-09-12
+"""
 import argparse
 import datetime
+
 from pathlib import Path
+
 import matplotlib.pyplot as plt
 import toml
 
@@ -101,14 +123,16 @@ def get_suitable_y(plot_data_list):
 
 def plot_line(ax, x, y, labels, color, style, data_list):
     """
-    用来绘制单个路径的 Energy Profile 的折线图
-    :param ax: Matplotlib axes object
-    :param x: X position
-    :param y: y position
-    :param labels: List of labels
-    :param color: Color of the data
-    :param style: Style of the data
-    :param data_list: list of the plot data
+    Plots a line graph of the energy profile for a single path.
+
+    Args:
+        ax (matplotlib.axes.Axes): Matplotlib axes object.
+        x (list): X positions.
+        y (list): Y positions.
+        labels (list): List of labels.
+        color (str): Color of the data.
+        style (str): Style of the data.
+        data_list (list): List of the plot data.
     """
     # 获取合适的 y 增量
     y_max, y_min = get_suitable_y(data_list)
@@ -131,12 +155,14 @@ def plot_line(ax, x, y, labels, color, style, data_list):
 
 def plot_all_lines(data_list, dpi, size, font, output_type):
     """
-    绘制所有的路径，顺序从最后一个绘制
-    :param data_list: list of plot data
-    :param dpi: dpi of the graph
-    :param size: size of the graph
-    :param font: font of the graph
-    :param output_type: output type of graph
+    Draws all the paths in reverse order.
+
+    Args:
+        data_list (list): List of plot data.
+        dpi (int): DPI of the graph.
+        size (int): Size of the graph.
+        font (str): Font of the graph.
+        output_type (str): Output type of the graph.
     """
     try:
         # 设置字体
@@ -185,8 +211,8 @@ def plot_all_lines(data_list, dpi, size, font, output_type):
 def main():
     # 定义版本信息
     version_info = {
-        'version': 'v1.3.0',
-        'release_date': 'Aug-4-2023',
+        'version': 'v1.3.1',
+        'release_date': 'Sep-12-2023',
         'developer': 'Kimariyb, Ryan Hsiun',
         'address': 'XiaMen University, School of Electronic Science and Engineering',
         'website': 'https://github.com/kimariyb/kimariPlot',
@@ -228,9 +254,9 @@ def main():
     print(f"Address: {version_info['address']}")
     print(f"KimariPlot home website: {version_info['website']}\n")
     # 获取当前日期和时间
-    now = datetime.datetime.now().strftime("%b-%d-%Y, 00:45:%S")
+    now = datetime.datetime.now().strftime("%b-%d-%Y, %H:%M:%S")
     # 程序结束后提示版权信息和问候语
     print(f"Thank you for using our plotting tool! Have a great day!")
-    print("Copyright © 2023 Kimariyb. All rights reserved.")
+    print("Copyright (C) 2023 Kimariyb. All rights reserved.")
     print(f"Currently timeline: {now}")
     print("============================================================================")
