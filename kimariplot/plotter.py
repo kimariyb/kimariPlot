@@ -19,12 +19,22 @@ For details, see the LICENSE file.
 2023-09-12
 """
 import argparse
-import datetime
+import os
 
+from datetime import datetime
 from pathlib import Path
 
 import matplotlib.pyplot as plt
 import toml
+
+# 获取当前文件被修改的最后一次时间
+time_last = os.path.getmtime(os.path.abspath(__file__))
+# 全局的静态变量
+__version__ = "v1.3.2"
+__developer__ = "Kimariyb, Ryan Hsiun"
+__address__ = "XiaMen University, School of Electronic Science and Engineering"
+__website__ = "https://github.com/kimariyb/kimariPlot"
+__release__ = str(datetime.fromtimestamp(time_last).strftime("%b-%d-%Y"))
 
 
 class PlotData:
@@ -160,7 +170,7 @@ def plot_all_lines(data_list, dpi, size, font, output_type):
     Args:
         data_list (list): List of plot data.
         dpi (int): DPI of the graph.
-        size (int): Size of the graph.
+        size (tuple[float]): Size of the graph.
         font (str): Font of the graph.
         output_type (str): Output type of the graph.
     """
@@ -209,15 +219,6 @@ def plot_all_lines(data_list, dpi, size, font, output_type):
 
 
 def main():
-    # 定义版本信息
-    version_info = {
-        'version': 'v1.3.1',
-        'release_date': 'Sep-12-2023',
-        'developer': 'Kimariyb, Ryan Hsiun',
-        'address': 'XiaMen University, School of Electronic Science and Engineering',
-        'website': 'https://github.com/kimariyb/kimariPlot',
-    }
-
     # 创建 ArgumentParser 对象
     parser = argparse.ArgumentParser(prog='KimariPlot', add_help=False,
                                      description='KimariPlot -- '
@@ -237,7 +238,7 @@ def main():
     parser.add_argument('--size', '-s', dest='size', type=str, help='The size of the graph', default='10,7.5')
     # 添加版权信息和参数
     parser.add_argument('--version', '-v', action='version', help='Show the version information',
-                        version=version_info['version'])
+                        version=__version__)
     # 解析命令行参数
     args = parser.parse_args()
 
@@ -249,12 +250,12 @@ def main():
     plot_all_lines(plot_data_list, args.dpi, size, args.font, args.output)
     # 程序最后输出版本和基础信息
     print(f"KimariPlot -- A plotting software used for quickly creating energy profile.")
-    print(f"Version: {version_info['version']}, release date: {version_info['release_date']}")
-    print(f"Developer: {version_info['developer']}")
-    print(f"Address: {version_info['address']}")
-    print(f"KimariPlot home website: {version_info['website']}\n")
+    print(f"Version: {__version__}, release date: {__release__}")
+    print(f"Developer: {__developer__}")
+    print(f"Address: {__address__}")
+    print(f"KimariPlot home website: {__website__}\n")
     # 获取当前日期和时间
-    now = datetime.datetime.now().strftime("%b-%d-%Y, %H:%M:%S")
+    now = datetime.now().strftime("%b-%d-%Y, %H:%M:%S")
     # 程序结束后提示版权信息和问候语
     print(f"Thank you for using our plotting tool! Have a great day!")
     print("Copyright (C) 2023 Kimariyb. All rights reserved.")
